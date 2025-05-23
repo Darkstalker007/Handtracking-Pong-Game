@@ -133,7 +133,7 @@ def reset_game():
     paddleRect2.x, paddleRect2.y = 188.5, 100
 
 def end():
-    if ball.top < 90 or ball.bottom > 750:
+    if ball.top <= 0 or ball.bottom >= 800:
         if ball.bottom > 750:
             screen.fill((0,0,0))
             screen.blit(endSurf,endRect)
