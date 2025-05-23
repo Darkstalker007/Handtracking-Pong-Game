@@ -4,6 +4,7 @@ from Hand import HandDetector
 
 pygame.init()
 screen= pygame.display.set_mode((500,800))
+bg=pygame.image.load('/Users/satviksingh/Desktop/PongGame/bg.png')
 pygame.display.set_caption("Pong")
 clock= pygame.time.Clock()
 
@@ -164,7 +165,7 @@ while True:
             pygame.quit()
             sys.exit()
 
-    screen.fill((0, 0, 0))
+    screen.blit(bg, (0,0))
     screen.blit(img, paddleRect1) #Paddle 1
     screen.blit(img, paddleRect2) #Paddle 2
     keys=pygame.key.get_pressed()
