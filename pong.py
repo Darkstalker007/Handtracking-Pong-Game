@@ -17,8 +17,8 @@ img = pygame.transform.scale(img, (paddleRect1.width, paddleRect1.height))  # Sc
 
 
 
-ball=pygame.Rect(250,400,30,30)
-ball.center=(250,400)
+ball=pygame.Rect(235,385,30,30)
+
 
 #Hand set up
 # cap = cv2.VideoCapture(0)
@@ -36,10 +36,24 @@ endRect=endSurf.get_rect(center=(250,400))
 wonSurf=Font.render("YOU WON!!!", False, 'Yellow')
 wonRect=wonSurf.get_rect(center=(250,400))
 
-changeY=random.randint(-7,7)
-changeX=random.randint(-7,7)
+def rand():
+    while True:
+        n= random.randint(-7,7)
+        if n!=0:
+            return n 
+
+changeY=rand()
+changeX=rand()
 
 MAX_SPEED = 20 
+
+#Sounds
+hit= pygame.mixer.Sound('/Users/satviksingh/Desktop/PongGame/hitSound.wav')
+hit.set_volume(1)
+over= pygame.mixer.Sound('/Users/satviksingh/Desktop/PongGame/gameOver.wav')
+over.set_volume(1)
+win=pygame.mixer.Sound('/Users/satviksingh/Desktop/PongGame/win.wav')
+win.set_volume(1)
 
 def clamp_speed(changex, changey, max_speed=MAX_SPEED):
     if changex > max_speed:
@@ -73,8 +87,7 @@ def handle_paddle1_collision(ball, paddleRect1, changex, changey):
         else:  
             changex = abs(changex)
             
-    # Remove this line since we're already clamping in the main loop
-    # changex, changey = clamp_speed(changex, changey)
+    changex, changey = clamp_speed(changex, changey)  # Add this line
     return changex, changey
 
 def handle_paddle2_collision(ball, paddleRect2, changex, changey):
@@ -106,9 +119,7 @@ def borderControl(ball, changex, changey):
     if ball.right >= 500 or ball.left <= 0: 
         changex *= -1
         changex, changey = clamp_speed(changex, changey)
-    if ball.top <= 0 or ball.bottom >= 800: 
-        changey *= -1
-        changex, changey = clamp_speed(changex, changey)
+        pygame.mixer.Sound.play(hit)  # Play sound when hitting side walls
     return changex, changey    
 
 def homeScreen():
@@ -128,7 +139,7 @@ homeScreen()
 def reset_game():
     global ball, changeX, changeY, paddleRect1, paddleRect2
     ball.center=(250,400)
-    changeX, changeY = random.randint(-7,7), random.randint(-7,7)
+    changeX, changeY = rand(), rand()
     paddleRect1.x, paddleRect1.y = 188.5, 700
     paddleRect2.x, paddleRect2.y = 188.5, 100
 
@@ -138,10 +149,12 @@ def end():
             screen.fill((0,0,0))
             screen.blit(endSurf,endRect)
             pygame.display.update()
+            pygame.mixer.Sound.play(over)
         if ball.top< 90:
             screen.fill((0,0,0))
             screen.blit(wonSurf,wonRect)
             pygame.display.update()
+            pygame.mixer.Sound.play(win)
         waiting = True
         while waiting:
             for event in pygame.event.get():
@@ -190,16 +203,14 @@ while True:
 
     enemyMovement()
 
-    #Ball logic
+    #Collide Logic
     if ball.colliderect(paddleRect1):  
         changeX, changeY = handle_paddle1_collision(ball, paddleRect1, changeX, changeY)
-        # Remove duplicate clamp_speed call
-        # changeX, changeY = clamp_speed(changeX, changeY)
+        pygame.mixer.Sound.play(hit)
 
     if ball.colliderect(paddleRect2):  
         changeX, changeY = handle_paddle2_collision(ball, paddleRect2, changeX, changeY)
-        # Remove duplicate clamp_speed call
-        # changeX, changeY = clamp_speed(changeX, changeY)
+        pygame.mixer.Sound.play(hit)
 
     #Border Controls
     changeX, changeY = borderControl(ball, changeX, changeY)
