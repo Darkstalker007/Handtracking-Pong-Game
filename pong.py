@@ -1,4 +1,4 @@
-import pygame,sys,cv2
+import pygame,sys,cv2,random
 from pygame import *
 from Hand import HandDetector
 
@@ -16,12 +16,13 @@ img = pygame.transform.rotate(img, -90)
 img = pygame.transform.scale(img, (paddleRect1.width, paddleRect1.height))  # Scale to fit paddleRect1
 
 
-x=250; y= 500
-ball=pygame.Rect(x,y,30,30)
+
+ball=pygame.Rect(250,400,30,30)
+ball.center=(250,400)
 
 #Hand set up
-cap = cv2.VideoCapture(0)
-detector = HandDetector()
+# cap = cv2.VideoCapture(0)
+# detector = HandDetector()
 
 
 # Text
@@ -35,8 +36,8 @@ endRect=endSurf.get_rect(center=(250,400))
 wonSurf=Font.render("YOU WON!!!", False, 'Yellow')
 wonRect=wonSurf.get_rect(center=(250,400))
 
-changeY=7
-changeX=7
+changeY=random.randint(-7,7)
+changeX=random.randint(-7,7)
 
 MAX_SPEED = 20 
 
@@ -98,10 +99,8 @@ def handle_paddle2_collision(ball, paddleRect2, changex, changey):
     return changex, changey
 
 def movement(keys):
-    if keys[pygame.K_RIGHT] and paddleRect1.right<=562: paddleRect1.x+=2
-    elif keys[pygame.K_LEFT] and paddleRect1.left >=-62:  paddleRect1.x-=2
-    # if keys[pygame.K_RIGHT] and paddleRect2.right<=562: paddleRect2.x+=2
-    # elif keys[pygame.K_LEFT] and paddleRect2.left >=-62:  paddleRect2.x-=2
+    if keys[pygame.K_RIGHT] and paddleRect1.right<=562: paddleRect1.x+=12
+    elif keys[pygame.K_LEFT] and paddleRect1.left >=-62:  paddleRect1.x-=12
     
 def borderControl(ball, changex, changey):
     if ball.right >= 500 or ball.left <= 0: 
@@ -128,8 +127,8 @@ homeScreen()
 
 def reset_game():
     global ball, changeX, changeY, paddleRect1, paddleRect2
-    ball.x, ball.y = 250, 500
-    changeX, changeY = 7, 7
+    ball.center=(250,400)
+    changeX, changeY = random.randint(-7,7), random.randint(-7,7)
     paddleRect1.x, paddleRect1.y = 188.5, 700
     paddleRect2.x, paddleRect2.y = 188.5, 100
 
@@ -169,19 +168,21 @@ while True:
     screen.blit(img, paddleRect1) #Paddle 1
     screen.blit(img, paddleRect2) #Paddle 2
     keys=pygame.key.get_pressed()
-    #movement(keys)
+    movement(keys)
 
-    success, frame = cap.read()
-    if success:
-        frame = cv2.flip(frame, 1)
-        detector.findHands(frame)
-        handX = detector.getIndexFingerX(frame)
-        if handX is not None:
-            cam_width = frame.shape[1]
-            game_width = screen.get_width()
-            paddleRect1.x = int((handX / cam_width) * game_width - paddleRect1.width / 2)
-            # Clamp to screen
-            paddleRect1.x = max(0, min(game_width - paddleRect1.width, paddleRect1.x))
+    if keys[pygame.K_r]: reset_game()
+
+    # success, frame = cap.read()
+    # if success:
+    #     frame = cv2.flip(frame, 1)
+    #     detector.findHands(frame)
+    #     handX = detector.getIndexFingerX(frame)
+    #     if handX is not None:
+    #         cam_width = frame.shape[1]
+    #         game_width = screen.get_width()
+    #         paddleRect1.x = int((handX / cam_width) * game_width - paddleRect1.width / 2)
+    #         # Clamp to screen
+    #         paddleRect1.x = max(0, min(game_width - paddleRect1.width, paddleRect1.x))
     
     pygame.draw.ellipse(screen, "Red", ball)
     ball.y+=changeY
