@@ -42,7 +42,7 @@ def rand():
         if n!=0:
             return n 
 
-changeY=rand()
+changeY=7
 changeX=rand()
 
 MAX_SPEED = 20 
@@ -54,6 +54,8 @@ over= pygame.mixer.Sound('/Users/satviksingh/Desktop/PongGame/gameOver.wav')
 over.set_volume(1)
 win=pygame.mixer.Sound('/Users/satviksingh/Desktop/PongGame/win.wav')
 win.set_volume(1)
+theme=pygame.mixer.music.load('/Users/satviksingh/Desktop/PongGame/theme.mp3')
+pygame.mixer.music.set_volume(0.25)
 
 def clamp_speed(changex, changey, max_speed=MAX_SPEED):
     if changex > max_speed:
@@ -135,13 +137,15 @@ def homeScreen():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 waiting = False
 homeScreen()
+pygame.mixer.music.play(-1)
 
 def reset_game():
     global ball, changeX, changeY, paddleRect1, paddleRect2
     ball.center=(250,400)
-    changeX, changeY = rand(), rand()
+    changeX, changeY = rand(), 7
     paddleRect1.x, paddleRect1.y = 188.5, 700
     paddleRect2.x, paddleRect2.y = 188.5, 100
+    pygame.mixer.music.play(-1)
 
 def end():
     if ball.top <= 0 or ball.bottom >= 800:
@@ -149,11 +153,13 @@ def end():
             screen.fill((0,0,0))
             screen.blit(endSurf,endRect)
             pygame.display.update()
+            pygame.mixer.music.pause()
             pygame.mixer.Sound.play(over)
         if ball.top< 90:
             screen.fill((0,0,0))
             screen.blit(wonSurf,wonRect)
             pygame.display.update()
+            pygame.mixer.music.pause()
             pygame.mixer.Sound.play(win)
         waiting = True
         while waiting:
@@ -206,11 +212,15 @@ while True:
     #Collide Logic
     if ball.colliderect(paddleRect1):  
         changeX, changeY = handle_paddle1_collision(ball, paddleRect1, changeX, changeY)
+        pygame.mixer.music.pause()
         pygame.mixer.Sound.play(hit)
+        pygame.mixer.music.unpause()
 
     if ball.colliderect(paddleRect2):  
         changeX, changeY = handle_paddle2_collision(ball, paddleRect2, changeX, changeY)
+        pygame.mixer.music.pause()
         pygame.mixer.Sound.play(hit)
+        pygame.mixer.music.unpause()
 
     #Border Controls
     changeX, changeY = borderControl(ball, changeX, changeY)
