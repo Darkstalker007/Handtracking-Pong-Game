@@ -38,7 +38,7 @@ wonRect=wonSurf.get_rect(center=(250,400))
 
 def rand():
     while True:
-        n=[-7,-6,-5,7,6,5]
+        n=[-10,-9,-8,10,9,8]
         return random.choice(n)
 
 changeY=rand()
@@ -202,7 +202,7 @@ while True:
             # Clamp to screen
             paddleRect1.x = max(0, min(game_width - paddleRect1.width, paddleRect1.x))
     
-    pygame.draw.ellipse(screen, "Red", ball)
+    pygame.draw.ellipse(screen, "Blue", ball)
     ball.y+=changeY
     ball.x+=changeX
 
