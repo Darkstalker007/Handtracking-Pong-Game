@@ -21,8 +21,8 @@ ball=pygame.Rect(235,385,30,30)
 
 
 #Hand set up
-# cap = cv2.VideoCapture(0)
-# detector = HandDetector()
+cap = cv2.VideoCapture(0)
+detector = HandDetector()
 
 
 # Text
@@ -181,21 +181,21 @@ while True:
     screen.blit(img, paddleRect1) #Paddle 1
     screen.blit(img, paddleRect2) #Paddle 2
     keys=pygame.key.get_pressed()
-    movement(keys)
+    # movement(keys)
 
     if keys[pygame.K_r]: reset_game()
 
-    # success, frame = cap.read()
-    # if success:
-    #     frame = cv2.flip(frame, 1)
-    #     detector.findHands(frame)
-    #     handX = detector.getIndexFingerX(frame)
-    #     if handX is not None:
-    #         cam_width = frame.shape[1]
-    #         game_width = screen.get_width()
-    #         paddleRect1.x = int((handX / cam_width) * game_width - paddleRect1.width / 2)
-    #         # Clamp to screen
-    #         paddleRect1.x = max(0, min(game_width - paddleRect1.width, paddleRect1.x))
+    success, frame = cap.read()
+    if success:
+        frame = cv2.flip(frame, 1)
+        detector.findHands(frame)
+        handX = detector.getIndexFingerX(frame)
+        if handX is not None:
+            cam_width = frame.shape[1]
+            game_width = screen.get_width()
+            paddleRect1.x = int((handX / cam_width) * game_width - paddleRect1.width / 2)
+            # Clamp to screen
+            paddleRect1.x = max(0, min(game_width - paddleRect1.width, paddleRect1.x))
     
     pygame.draw.ellipse(screen, "Red", ball)
     ball.y+=changeY
