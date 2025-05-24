@@ -38,11 +38,10 @@ wonRect=wonSurf.get_rect(center=(250,400))
 
 def rand():
     while True:
-        n= random.randint(-7,7)
-        if n!=0:
-            return n 
+        n=[-7,-6,-5,7,6,5]
+        return random.choice(n)
 
-changeY=7
+changeY=rand()
 changeX=rand()
 
 MAX_SPEED = 20 
@@ -142,7 +141,7 @@ pygame.mixer.music.play(-1)
 def reset_game():
     global ball, changeX, changeY, paddleRect1, paddleRect2
     ball.center=(250,400)
-    changeX, changeY = rand(), 7
+    changeX, changeY = rand(), rand()
     paddleRect1.x, paddleRect1.y = 188.5, 700
     paddleRect2.x, paddleRect2.y = 188.5, 100
     pygame.mixer.music.play(-1)
