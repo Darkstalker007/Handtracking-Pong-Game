@@ -44,7 +44,7 @@ def rand():
 changeY=rand()
 changeX=rand()
 
-MAX_SPEED = 20 
+MAX_SPEED = 30
 
 #Sounds
 hit= pygame.mixer.Sound('/Users/satviksingh/Desktop/PongGame/hitSound.wav')
