@@ -3,7 +3,7 @@ import cv2
 import mediapipe as mp
 
 class HandDetector:
-    def __init__(self, maxHands=1, detectionCon=0.7, trackCon=0.5):
+    def __init__(self, maxHands=1, detectionCon=0.7, trackCon=0.7):
         self.maxHands = maxHands
         self.detectionCon = detectionCon
         self.trackCon = trackCon
