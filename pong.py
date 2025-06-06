@@ -135,8 +135,6 @@ def homeScreen():
                 sys.exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 waiting = False
-homeScreen()
-pygame.mixer.music.play(-1)
 
 def reset_game():
     global ball, changeX, changeY, paddleRect1, paddleRect2
@@ -175,6 +173,10 @@ def enemyMovement():
         paddleRect2.x -= 12  # Move left
     elif paddleRect2.centerx - ball.centerx < 0 and paddleRect2.right < 500:
         paddleRect2.x += 12  # Move right           
+
+#Starting of the game
+homeScreen()
+pygame.mixer.music.play(-1)
 
 while True:
     for event in pygame.event.get():
