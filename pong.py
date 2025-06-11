@@ -4,14 +4,14 @@ from Hand import HandDetector
 
 pygame.init()
 screen= pygame.display.set_mode((500,800))
-bg=pygame.image.load('bg.png')
+bg=pygame.image.load('static/bg.png')
 pygame.display.set_caption("Pong")
 clock= pygame.time.Clock()
 
 #Player Setup
 paddleRect1=pygame.Rect(188.5,700, 100, 10)
 paddleRect2=pygame.Rect(188.5,100, 100, 10)
-img=pygame.image.load('img.png')
+img=pygame.image.load('static/img.png')
 img = pygame.transform.rotate(img, -90)
 img = pygame.transform.scale(img, (paddleRect1.width, paddleRect1.height))  # Scale to fit paddleRect1
 
@@ -26,7 +26,7 @@ detector = HandDetector()
 
 
 # Text
-Font=pygame.font.Font("pixelFont.ttf", 50)
+Font=pygame.font.Font("static/pixelFont.ttf", 50)
 textSurface=Font.render("PONG!", False, (56, 232, 12))
 textRect=textSurface.get_rect(center=(250,400))
 
@@ -47,13 +47,13 @@ changeX=rand()
 MAX_SPEED = 30
 
 #Sounds
-hit= pygame.mixer.Sound('hitSound.wav')
+hit= pygame.mixer.Sound('static/hitSound.wav')
 hit.set_volume(1)
-over= pygame.mixer.Sound('gameOver.wav')
+over= pygame.mixer.Sound('static/gameOver.wav')
 over.set_volume(1)
-win=pygame.mixer.Sound('win.wav')
+win=pygame.mixer.Sound('static/win.wav')
 win.set_volume(1)
-theme=pygame.mixer.music.load('theme.mp3')
+theme=pygame.mixer.music.load('static/theme.mp3')
 pygame.mixer.music.set_volume(0.25)
 
 def clamp_speed(changex, changey, max_speed=MAX_SPEED):
